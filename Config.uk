@@ -1,0 +1,14 @@
+config LIBMICROHTTPD
+	bool "LIBMICROHTTPD - GNU minimal httpd library"
+	default n
+	select LIBNOLIBC if !HAVE_LIBC
+	select LIBUKDEBUG
+	select LIBUKALLOC
+    select LIBNEWLIB
+    select LIBPOSIX_SYSINFO
+    select LIBPOSIX_LIBDL
+
+default n
+
+if LIBMICROHTTPD
+endif

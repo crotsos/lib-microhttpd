@@ -1,0 +1,65 @@
+################################################################################
+# Library registration
+################################################################################
+$(eval $(call addlib_s,libmicrohttpd,$(CONFIG_LIBMICROHTTPD)))
+
+################################################################################
+# Sources
+################################################################################
+LIBMICROHTTPD_VERSION=0.9.70
+LIBMICROHTTPD_URL=https://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-$(LIBMICROHTTPD_VERSION).tar.gz
+LIBMICROHTTPD_PATCHDIR=$(LIBMICROHTTPD_BASE)/patches
+$(eval $(call fetch,libmicrohttpd,$(LIBMICROHTTPD_URL)))
+$(eval $(call patch,libmicrohttpd,$(LIBMICROHTTPD_PATCHDIR),libmicrohttpd-$(LIBMICROHTTPD_VERSION)))
+###############################################################################
+# Helpers
+################################################################################
+LIBMICROHTTPD_SUBDIR=libmicrohttpd-$(LIBMICROHTTPD_VERSION)
+LIBMICROHTTPD_SRC=$(LIBMICROHTTPD_ORIGIN)/$(LIBMICROHTTPD_SUBDIR)
+
+################################################################################
+# Library includes
+################################################################################
+CINCLUDES-$(CONFIG_LIBMICROHTTPD) += -I$(LIBMICROHTTPD_SRC)/
+CINCLUDES-$(CONFIG_LIBMICROHTTPD) += -I$(LIBMICROHTTPD_SRC)/src/lib/
+CINCLUDES-$(CONFIG_LIBMICROHTTPD) += -I$(LIBMICROHTTPD_SRC)/src/include/
+CXXINCLUDES-$(CONFIG_LIBMICROHTTPD) += -I$(LIBMICROHTTPD_SRC)/src/lib/
+CXXINCLUDES-$(CONFIG_LIBMICROHTTPD) += -I$(LIBMICROHTTPD_SRC)/src/include/
+
+################################################################################
+# Global flags
+################################################################################
+# Suppress some warnings to make the build process look neater
+SUPPRESS_FLAGS += -Wno-unused-parameter -Wno-unused-variable -Wno-nonnull	\
+-Wno-unused-but-set-variable -Wno-unused-label -Wno-char-subscripts		\
+-Wno-unused-function -Wno-missing-field-initializers -Wno-uninitialized		\
+-Wno-array-bounds -Wno-maybe-uninitialized -Wno-pointer-sign -Wno-unused-value	\
+-Wno-unused-macros -Wno-parentheses -Wno-implicit-function-declaration		\
+-Wno-missing-braces -Wno-endif-labels -Wno-unused-but-set-variable		\
+-Wno-implicit-function-declaration -Wno-type-limits -Wno-sign-compare
+
+LIBMICROHTTPD_CFLAGS-y    +=  $(SUPPRESS_FLAGS)
+LIBMICROHTTPD_CXXFLAGS-y    +=  $(SUPPRESS_FLAGS)
+
+################################################################################
+# Library sources
+################################################################################
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/base64.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/basicauth.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/connection.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/daemon.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/internal.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/md5.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/memorypool.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/mhd_compat.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/mhd_itc.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/mhd_mono_clock.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/mhd_send.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/mhd_sockets.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/mhd_str.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/mhd_threads.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/postprocessor.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/reason_phrase.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/response.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/sha256.c
+LIBMICROHTTPD_SRCS-y += $(LIBMICROHTTPD_SRC)/src/microhttpd/sysfdsetsize.c
